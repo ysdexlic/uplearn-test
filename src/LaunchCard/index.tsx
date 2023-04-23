@@ -1,4 +1,4 @@
-import { LaunchType } from './types'
+import { LaunchType } from '../types'
 
 export const LaunchCard = ({
   id,

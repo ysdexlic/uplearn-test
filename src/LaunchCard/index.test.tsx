@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import { LaunchCard } from './LaunchCard'
+import { LaunchCard } from '.'
 
 describe('LaunchCard Component', () => {
   const mockLaunch = {
