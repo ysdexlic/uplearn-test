@@ -1,16 +1,34 @@
-import { ApolloClient, InMemoryCache, ApolloProvider, gql } from '@apollo/client';
-
-import logo from './logo.svg';
-import './App.css';
+import { ApolloClient, InMemoryCache, gql } from '@apollo/client';
 import {useEffect, useState} from 'react';
+
+import './App.css';
 
 const gqlClient = new ApolloClient({
   uri: 'https://spacex-production.up.railway.app/',
   cache: new InMemoryCache(),
 });
 
+type LaunchType = {
+  id: string;
+  details: string;
+  mission_name: string;
+  links: {
+    video_link: string;
+    article_link: string;
+  };
+  launch_date_utc: string;
+}
+
+type ResponseType = {
+  data: {
+    launches: LaunchType[]
+  };
+  loading: boolean;
+  networkStatus: number;
+}
+
 const App = () => {
-  const [launches, setLaunches] = useState({})
+  const [launchResult, setLaunchResult] = useState<ResponseType>()
 
   useEffect(() => {
     const fetchLaunches = async () => {
@@ -31,28 +49,19 @@ const App = () => {
         }
         `,
       })
-      setLaunches(res)
+      setLaunchResult(res)
     }
     fetchLaunches()
-  }, [setLaunches])
-
-  console.log(launches)
+  }, [setLaunchResult])
 
   return (
-    <div className="App">
+    <div className="App" data-testid="app">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        {launchResult && launchResult.data.launches.map((launch: LaunchType) => (
+          <div key={launch.id}>
+            {launch.id}
+          </div>
+        ))}
       </header>
     </div>
   );
