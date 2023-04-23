@@ -1,52 +1,35 @@
-import { ApolloClient, InMemoryCache, gql } from '@apollo/client';
-import {useEffect, useState} from 'react';
+import { ApolloClient, InMemoryCache, gql } from '@apollo/client'
+import { useEffect, useState } from 'react'
 
-import './App.css';
+import { LaunchResponseType, LaunchType } from './types'
+
+import './App.css'
+import { LaunchCard } from './LaunchCard'
 
 const gqlClient = new ApolloClient({
   uri: 'https://spacex-production.up.railway.app/',
   cache: new InMemoryCache(),
-});
-
-type LaunchType = {
-  id: string;
-  details: string;
-  mission_name: string;
-  links: {
-    video_link: string;
-    article_link: string;
-  };
-  launch_date_utc: string;
-}
-
-type ResponseType = {
-  data: {
-    launches: LaunchType[]
-  };
-  loading: boolean;
-  networkStatus: number;
-}
+})
 
 const App = () => {
-  const [launchResult, setLaunchResult] = useState<ResponseType>()
+  const [launchResult, setLaunchResult] = useState<LaunchResponseType>()
 
   useEffect(() => {
     const fetchLaunches = async () => {
-      const res = await gqlClient
-      .query({
+      const res = await gqlClient.query({
         query: gql`
-        query Launches {
-          launches {
-            id
-            details
-            mission_name
-            links {
-              video_link
-              article_link
+          query Launches {
+            launches {
+              id
+              details
+              mission_name
+              links {
+                video_link
+                article_link
+              }
+              launch_date_utc
             }
-            launch_date_utc
           }
-        }
         `,
       })
       setLaunchResult(res)
@@ -57,14 +40,13 @@ const App = () => {
   return (
     <div className="App" data-testid="app">
       <header className="App-header">
-        {launchResult && launchResult.data.launches.map((launch: LaunchType) => (
-          <div key={launch.id}>
-            {launch.id}
-          </div>
-        ))}
+        {launchResult &&
+          launchResult.data.launches.map((launch: LaunchType) => (
+            <LaunchCard {...launch} key={launch.id} />
+          ))}
       </header>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
