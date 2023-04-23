@@ -1,0 +1,28 @@
+.launch-card {
+  background-color: #fefefe;
+  width: 100%;
+  padding: 24px;
+  box-sizing: border-box;
+  border: 1px solid;
+  border-radius: 4px;
+  box-shadow: 2px 4px 8px 1px rgba(0, 0, 0, 0.3);
+}
+
+.launch-card__header h1,
+.launch-card__header h3,
+.launch-card__header p {
+  display: inline;
+}
+
+.launch-card__header h3 {
+  padding-left: 12px;
+}
+
+.launch-card h5 {
+  margin: 12px 0 0 0;
+}
+
+.launch-card__links {
+  display: flex;
+  justify-content: space-evenly;
+}
